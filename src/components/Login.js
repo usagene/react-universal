@@ -36,9 +36,9 @@ class Login extends React.Component{
 		return (
 			<div className="panel-body" >
 				<div>
-					<label htmlFor="txtUserName">User Name:</label><input type="text" onChange={this.updateUserName.bind(this)} name="txtUserName"/>
+					<label htmlFor="txtUserName">User Name:</label><input type="text" onChange={this.updateUserName.bind(this)} name="txtUserName" autoComplete="off" />
 				</div>
-				<div><label htmlFor="txtPassword">Password</label><input type="text" name="txtPassword"/></div>
+				<div><label htmlFor="txtPassword">Password</label><input type="text" name="txtPassword" autoComplete="off" /></div>
 				<button onClick={this.signIn.bind(this)}>Sign In</button>
 			</div>
 		);

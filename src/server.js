@@ -5,17 +5,33 @@ import koaStatic from "koa-static";
 import React from "react";
 import ReactDOM from "react-dom/server";
 import * as ReactRouter from "react-router";
-import Transmit from "react-transmit";
 
 import githubApi from "apis/github";
-import routesContainer from "containers/routes";
+import routesContainer from "./routes";
 import favicon from "favicon.ico";
 
+const bootstrapComponent = function (renderProps) {
+	return new Promise((resolve, reject)=> {
+		let component = renderProps.components.find((c)=> {
+			return !!c;
+		});
+
+		if (component && component.fetchData) {
+			component.fetchData().then((data)=> {
+				resolve(React.createElement(component, {repos: data}));
+			});
+		} else if (component) {
+			resolve(React.createElement(component));
+		}
+	});
+};
+
 try {
-	const app      = koa();
+	const app = koa();
 	const hostname = process.env.HOSTNAME || "localhost";
-	const port     = process.env.PORT || 4000;
-	let   routes   = routesContainer;
+	const port = process.env.PORT || 4000;
+
+	let routes = routesContainer;
 
 	app.use(koaStatic("static"));
 
@@ -28,7 +44,7 @@ try {
 	app.use(function *(next) {
 		yield ((callback) => {
 			const webserver = __PRODUCTION__ ? "" : `//${this.hostname}:${this.port}`;
-			const location  = this.path;
+			const location = this.path;
 
 			ReactRouter.match({routes, location}, (error, redirectLocation, renderProps) => {
 				if (redirectLocation) {
@@ -41,52 +57,28 @@ try {
 					return;
 				}
 
-				const styles = [];
-
-				const StyleProvider = React.createClass({
-					childContextTypes:{
-						styles:    React.PropTypes.array,
-						insertCss: React.PropTypes.func
-					},
-
-					getChildContext () {
-						return {
-							styles,
-							insertCss (style) { styles[style] = style._getCss(); }
-						};
-					},
-
-					render () {
-						return <ReactRouter.RouterContext {...this.props} />;
-					}
-				});
-
-				Transmit.renderToString(StyleProvider, renderProps).then(({reactString, reactData}) => {
-					let cssModules = "";
-
-					Object.keys(styles).forEach((style) => { cssModules += styles[style]; });
-
+				bootstrapComponent(renderProps).then((element)=> {
+					let reactString = ReactDOM.renderToString(element);
 					let template = (
 						`<!doctype html>
 						<html lang="en-us">
 							<head>
 								<meta charset="utf-8" />
-								<title>react-isomorphic-starterkit</title>
+								<title>React universal PoC</title>
 								<link rel="shortcut icon" href="${favicon}" />
-								<style>${cssModules}</style>
 							</head>
 							<body>
 								<div id="react-root">${reactString}</div>
+								<script src="${webserver}/dist/client.js"></script>
+								<script></script>
 							</body>
 						</html>`
 					);
 
 					this.type = "text/html";
-					this.body = Transmit.injectIntoMarkup(template, reactData, [`${webserver}/dist/client.js`]);
+					this.body = template;
 
 					callback(null);
-				}).catch(e => {
-					callback(e);
 				});
 			});
 		});
@@ -101,8 +93,8 @@ try {
 		if (module.hot) {
 			console.log("[HMR] Waiting for server-side updates");
 
-			module.hot.accept("containers/routes", () => {
-				routes = require("containers/routes");
+			module.hot.accept("routes", () => {
+				routes = require("routes");
 			});
 
 			module.hot.addStatusHandler((status) => {

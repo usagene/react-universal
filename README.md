@@ -1,19 +1,4 @@
-![screenshot](https://i.imgur.com/JgBEIMm.png?1)
-
-# React Isomorphic Starterkit
-
-Isomorphic starterkit with server-side React rendering using
-[npm](https://www.npmjs.com),
-[koa](http://koajs.com),
-[webpack](https://webpack.github.io/),
-[babel](http://babeljs.io),
-[react](https://facebook.github.io/react),
-[react-router](https://github.com/rackt/react-router),
-[react-transform-hmr](https://github.com/gaearon/react-transform-hmr),
-[react-transmit](https://github.com/RickWong/react-transmit),
-[react-inline-css](https://github.com/RickWong/react-inline-css)
-
-![version](https://img.shields.io/npm/v/react-isomorphic-starterkit.svg) ![license](https://img.shields.io/npm/l/react-isomorphic-starterkit.svg) [![Package Quality](http://npm.packagequality.com/shield/react-isomorphic-starterkit.svg)](http://packagequality.com/#?package=react-isomorphic-starterkit) ![installs](https://img.shields.io/npm/dt/react-isomorphic-starterkit.svg) ![downloads](https://img.shields.io/github/downloads/RickWong/react-isomorphic-starterkit/latest/total.svg)
+# React Unversal rendering PoC
 
 ## Features
 
@@ -23,6 +8,8 @@ Isomorphic starterkit with server-side React rendering using
 - Webpack HMR for instant server updates
 - React Transform HMR for instant client updates
 - React Transmit to preload on server and hydrate client
+
+## TODO
 - InlineCss-component for styling components
 
 It just works out-of-the-box.

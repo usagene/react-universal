@@ -7,26 +7,17 @@ import Public from './../components/Public';
 import Login from './../components/Login';
 import githubApi from "apis/github";
 
-const fetchRepos = (uid)=>{
-	let owner = uid || 'usagene';
-
-	return githubApi.browse(
-		["users", owner, "repos"],
-		{ }
-	).then(json => {
-		return json;
-	}).catch(error => {
-		throw error;
-	});
-};
-
 class Demo extends React.Component {
 	constructor(props) {
 		super(props);
 
+		if (__SERVER__) {
+			console.log("Demo Server init");
+			console.log(props);
+		}
+
 		this.state = {
-			user: userStore.getState(),
-			repos: null
+			user: userStore.getState()
 		};
 	}
 
@@ -50,10 +41,6 @@ class Demo extends React.Component {
 				browserHistory.push('/home');
 			}
 		});
-
-		fetchRepos().then((repos)=>{
-			this.setState({repos: repos});
-		});
 	}
 
 	signIn(action){
@@ -67,11 +54,24 @@ class Demo extends React.Component {
 		return (
 			<div>
 				<Login user={this.state.user} onSignIn={this.signIn}></Login>
-				<Public repos={this.state.repos}></Public>
+				<Public repos={this.props.repos}></Public>
 			</div>
 		);
 	}
 }
+
+Demo.fetchData = (uid)=>{
+	let owner = uid || 'usagene';
+
+	return githubApi.browse(
+		["users", owner, "repos"],
+		{ }
+	).then(json => {
+		return json;
+	}).catch(error => {
+		throw error;
+	});
+};
 
 export default Demo;
 

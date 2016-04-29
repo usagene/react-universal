@@ -4,9 +4,11 @@ import {Link} from 'react-router';
 class Public extends React.Component{
 	constructor(props){
 		super(props);
-
-		this.state = {
-			repos: this.props.repos || []
+		
+		if(__SERVER__){
+			console.log('Public component instantiation');
+			
+			console.log(this.props);
 		}
 	}
 
@@ -14,8 +16,8 @@ class Public extends React.Component{
 		return (
 			<div>
 				<ul>
-					{ this.state.repos.forEach((repo)=>{
-						<li><Link to={`/detail/${repo.id}`}>{repo.name}</Link></li>
+					{ this.props.repos.map((repo)=>{
+						return <li key={repo.id}><Link to={`/detail/${repo.id}`}>{repo.name}</Link></li>;
 					})}
 				</ul>
 			</div>

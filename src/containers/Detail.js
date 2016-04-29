@@ -23,7 +23,7 @@ class Detail extends React.Component{
 		return (
 			<div>
 				<div>This is the detail page for {this.state.id}!</div>
-				<div><Link to="/home">Go back home</Link></div>
+				<div><Link to="/">Go back home</Link></div>
 			</div>
 		);
 	}
