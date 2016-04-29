@@ -57,6 +57,8 @@ try {
 					return;
 				}
 
+				let clientScriptUrl = `${webserver}/dist/client.js`;
+
 				bootstrapComponent(renderProps).then((element)=> {
 					let reactString = ReactDOM.renderToString(element);
 					let template = (
@@ -69,7 +71,7 @@ try {
 							</head>
 							<body>
 								<div id="react-root">${reactString}</div>
-								<script src="${webserver}/dist/client.js"></script>
+								<script src=${clientScriptUrl}></script>
 								<script></script>
 							</body>
 						</html>`
