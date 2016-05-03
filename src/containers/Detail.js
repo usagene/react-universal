@@ -19,11 +19,19 @@ class Detail extends React.Component{
 		}
 	}
 
+	componentWillUpdate(){
+		console.log('Detail will be updated');
+	}
+
+	onClick(){
+		alert('Button clicked');
+	}
+
 	render(){
 		return (
 			<div>
 				<div>This is the detail page for {this.state.id}!</div>
-				<div><Link to="/">Go back home</Link></div>
+				<div><button onClick={this.onClick.bind(this)}>Alert</button>  <Link to="/">Back to Home</Link></div>
 			</div>
 		);
 	}

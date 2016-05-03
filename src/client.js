@@ -11,9 +11,7 @@ const reactRoot = window.document.getElementById("react-root");
 match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
 	renderProps.params.repos = window.initData;
 	ReactDom.render(<Router {...renderProps}></Router>, reactRoot);
-})
-
-// ReactDom.render(routes, reactRoot);
+});
 
 /**
  * Detect whether the server-side render has been discarded due to an invalid checksum.

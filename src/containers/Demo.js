@@ -17,7 +17,8 @@ class Demo extends React.Component {
 		}
 
 		this.state = {
-			user: userStore.getState()
+			user: userStore.getState(),
+			repos: this.props.params.repos
 		};
 	}
 
@@ -31,7 +32,14 @@ class Demo extends React.Component {
 
 		if (__CLIENT__) {
 			console.log("Hello client");
+			if(!this.state.repos){
+				this.state.repos = window.initData;
+			}
 		}
+	}
+
+	componentWillUpdate(){
+		console.log('Demo will be updated');
 	}
 
 	componentDidMount(){
@@ -54,7 +62,7 @@ class Demo extends React.Component {
 		return (
 			<div>
 				<Login user={this.state.user} onSignIn={this.signIn}></Login>
-				<Public repos={this.props.params.repos}></Public>
+				<Public repos={this.state.repos}></Public>
 			</div>
 		);
 	}
