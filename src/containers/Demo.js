@@ -54,7 +54,7 @@ class Demo extends React.Component {
 		return (
 			<div>
 				<Login user={this.state.user} onSignIn={this.signIn}></Login>
-				<Public repos={this.props.repos}></Public>
+				<Public repos={this.props.params.repos}></Public>
 			</div>
 		);
 	}

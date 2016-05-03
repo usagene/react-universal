@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDom from "react-dom";
-import * as ReactRouter from "react-router";
+import {RouterContext, Router, browserHistory, match} from "react-router";
 
 import routes from "./routes";
 
@@ -8,10 +8,12 @@ import routes from "./routes";
  * Fire-up React Router.
  */
 const reactRoot = window.document.getElementById("react-root");
+match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
+	renderProps.params.repos = window.initData;
+	ReactDom.render(<Router {...renderProps}></Router>, reactRoot);
+})
 
-ReactDom.render(routes, reactRoot);
-
-// Transmit.render(ReactRouter.Router, {routes: routesContainer, history: ReactRouter.browserHistory}, reactRoot);
+// ReactDom.render(routes, reactRoot);
 
 /**
  * Detect whether the server-side render has been discarded due to an invalid checksum.

@@ -4,9 +4,9 @@ import koaProxy from "koa-proxy";
 import koaStatic from "koa-static";
 import React from "react";
 import ReactDOM from "react-dom/server";
-import * as ReactRouter from "react-router";
-
+import {match, RouterContext} from "react-router";
 import githubApi from "apis/github";
+
 import routesContainer from "./routes";
 import favicon from "favicon.ico";
 
@@ -18,10 +18,12 @@ const bootstrapComponent = function (renderProps) {
 
 		if (component && component.fetchData) {
 			component.fetchData().then((data)=> {
-				resolve(React.createElement(component, {repos: data}));
+				renderProps.repos = data;
+				renderProps.params.repos = data;
+				resolve(renderProps);
 			});
-		} else if (component) {
-			resolve(React.createElement(component));
+		} else {
+			resolve(renderProps);
 		}
 	});
 };
@@ -46,7 +48,7 @@ try {
 			const webserver = __PRODUCTION__ ? "" : `//${this.hostname}:${this.port}`;
 			const location = this.path;
 
-			ReactRouter.match({routes, location}, (error, redirectLocation, renderProps) => {
+			match({routes, location}, (error, redirectLocation, renderProps) => {
 				if (redirectLocation) {
 					this.redirect(redirectLocation.pathname + redirectLocation.search, "/");
 					return;
@@ -58,9 +60,10 @@ try {
 				}
 
 				let clientScriptUrl = `${webserver}/dist/client.js`;
-
-				bootstrapComponent(renderProps).then((element)=> {
-					let reactString = ReactDOM.renderToString(element);
+				
+				bootstrapComponent(renderProps).then((newRenderProps)=> {
+					let initData = JSON.stringify(newRenderProps.params.repos);
+					let reactString = ReactDOM.renderToString(<RouterContext {...newRenderProps}></RouterContext>);
 					let template = (
 						`<!doctype html>
 						<html lang="en-us">
@@ -71,8 +74,8 @@ try {
 							</head>
 							<body>
 								<div id="react-root">${reactString}</div>
+								<script>window.initData = ${initData};</script>
 								<script src=${clientScriptUrl}></script>
-								<script></script>
 							</body>
 						</html>`
 					);

@@ -1,4 +1,5 @@
 export default {
     SignIn: 'SignIn',
-	UpdateName: 'UpdateName'
+	UpdateName: 'UpdateName',
+	GetAllRepo: 'GetAllRepo'
 }

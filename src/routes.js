@@ -9,8 +9,8 @@ import Detail from './containers/Detail';
  * The React Router routes for both the server and the client.
  */
 export default (
-	<Router history={browserHistory}>
-		<Route path="/" component={Demo}></Route>
+	<Router history={browserHistory} >
+		<Route path="/" component={Demo} ></Route>
 		<Route path="/home" component={Home}></Route>
 		<Route path="/detail/:id" component={Detail}></Route>
 	</Router>
