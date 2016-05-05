@@ -30,7 +30,7 @@ class Detail extends React.Component{
 	render(){
 		return (
 			<div>
-				<div>This is the detail page for {this.state.id}!</div>
+				<div>This is the detail page for!</div>
 				<div><button onClick={this.onClick.bind(this)}>Alert</button>  <Link to="/">Back to Home</Link></div>
 			</div>
 		);

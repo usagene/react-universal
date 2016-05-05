@@ -60,10 +60,10 @@ try {
 				}
 
 				let clientScriptUrl = `${webserver}/dist/client.js`;
-				
+
 				bootstrapComponent(renderProps).then((newRenderProps)=> {
 					let initData = JSON.stringify(newRenderProps.params.repos);
-					let reactString = ReactDOM.renderToString(<RouterContext {...newRenderProps}></RouterContext>);
+					let reactString = ReactDOM.renderToStaticMarkup(<RouterContext {...newRenderProps}></RouterContext>);
 					let template = (
 						`<!doctype html>
 						<html lang="en-us">
