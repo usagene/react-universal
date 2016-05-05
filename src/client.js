@@ -9,7 +9,6 @@ import routes from "./routes";
  */
 const reactRoot = window.document.getElementById("react-root");
 match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
-	renderProps.params.repos = window.initData;
 	ReactDom.render(<Router {...renderProps}></Router>, reactRoot);
 });
 
